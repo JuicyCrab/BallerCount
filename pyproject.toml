@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "beautifulsoup4>=4.13.4",
     "matplotlib>=3.10.3",
+    "nba-api>=1.9.0",
     "pandas>=2.2.3",
     "requests>=2.32.3",
     "seaborn>=0.13.2",

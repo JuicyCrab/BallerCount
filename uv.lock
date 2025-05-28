@@ -34,6 +34,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "beautifulsoup4" },
     { name = "matplotlib" },
+    { name = "nba-api" },
     { name = "pandas" },
     { name = "requests" },
     { name = "seaborn" },
@@ -44,6 +45,7 @@ dependencies = [
 requires-dist = [
     { name = "beautifulsoup4", specifier = ">=4.13.4" },
     { name = "matplotlib", specifier = ">=3.10.3" },
+    { name = "nba-api", specifier = ">=1.9.0" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "seaborn", specifier = ">=0.13.2" },
@@ -364,6 +366,20 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/32/fc/7b9a3689911662be59889b1b0b40e17d5dba6f98080994d86ca1f3154d41/narwhals-1.41.0.tar.gz", hash = "sha256:0ab2e5a1757a19b071e37ca74b53b0b5426789321d68939738337dfddea629b5", size = 488446, upload-time = "2025-05-26T12:46:07.43Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c9/e0/ade8619846645461c012498f02b93a659e50f07d9d9a6ffefdf5ea2c02a0/narwhals-1.41.0-py3-none-any.whl", hash = "sha256:d958336b40952e4c4b7aeef259a7074851da0800cf902186a58f2faeff97be02", size = 357968, upload-time = "2025-05-26T12:46:05.207Z" },
+]
+
+[[package]]
+name = "nba-api"
+version = "1.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "requests" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2a/11/ef76945eb6b32f9a8147b15cf9378988841b6788e389d65a1c299a3d7546/nba_api-1.9.0.tar.gz", hash = "sha256:2e87bd3fb525e19b8d359cdc5c5ed2a8d7a60991d7717117ee011a75af8f2392", size = 153514, upload-time = "2025-03-31T16:28:15.29Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/51/71/d311c53485919b4efc3b39058b168bfd1dffb7f00754de2cab28e54093d9/nba_api-1.9.0-py3-none-any.whl", hash = "sha256:b88eed7ec3f4a2837e43441c60b3213c3bac3687bde2331fcd8d85b72a2f2a96", size = 284921, upload-time = "2025-03-31T16:28:13.702Z" },
 ]
 
 [[package]]
