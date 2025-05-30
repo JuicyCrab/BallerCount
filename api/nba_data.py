@@ -5,8 +5,8 @@ from nba_api.stats.static import players
 
 def get_player_id(player_name):
     find_player = players.find_players_by_full_name(player_name)
-    if find_player is None:
-        return None 
+    if not find_player: 
+        return None
     player_id = find_player[0]['id']
     return player_id
     
@@ -18,4 +18,11 @@ def get_player_stats(player_name):
     df = career.get_data_frames()[0]
     if 'PLAYER_ID' in df.columns or 'TEAM_ID' in df.columns or 'LEAGUE_ID':
         df = df.drop(columns=['PLAYER_ID', 'TEAM_ID', 'LEAGUE_ID'])
-    return df 
+    df.rename(columns={
+            'SEASON_ID': 'Season',
+            'TEAM_ABBREVIATION': 'Team',
+            'PLAYER_AGE': 'Age'
+        }, inplace=True)
+    df = df.iloc[:,1:]
+    return df
+
