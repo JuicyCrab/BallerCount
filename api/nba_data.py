@@ -21,7 +21,11 @@ def get_player_stats(player_name):
     df.rename(columns={
             'SEASON_ID': 'Season',
             'TEAM_ABBREVIATION': 'Team',
-            'PLAYER_AGE': 'Age'
+            'PLAYER_AGE': 'Age',
+            'FG_PCT': 'FG%',
+            'FG3_PCT':'FG3%',
+            'FT_PCT':'FT%',
+            'PF':'Fouls'
         }, inplace=True)
     df = df.iloc[:,1:]
     return df
