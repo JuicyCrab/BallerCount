@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd 
+import numpy as np
 from api.nba_data import get_player_stats
 
 @st.cache_data
@@ -46,7 +47,7 @@ if page =="Personal Stats":
         def safe_divide(n, d):
             return round(n / d, 2) if d else 0.0
 
-        st.session_state.personal_stats = {
+        data = {
             "Date": date_input,
             "Age": age,
             "GP": games_played,
@@ -64,9 +65,9 @@ if page =="Personal Stats":
         }
         st.success("Stats saved")
 
-        df = pd.DataFrame(st.session_state.personal_stats,index=[0])
-        new_df = df.style.highlight_max(axis=0, color='yellow')
-        st.dataframe(new_df)
+        st.session_state.personal_stats_data = pd.DataFrame(data,index=[0])
+        st.session_state.personal_stats_styler = st.session_state.personal_stats_data.style.highlight_max(axis=0, color='yellow')
+        st.dataframe(st.session_state.personal_stats_styler)
     
 if page == "Find a player":
     st.title("NBA Player")
@@ -76,7 +77,18 @@ if page == "Find a player":
     if df is None:
         st.error(f"There are no stats for {player1}")
     else:
-        st.dataframe(df)
+        df = df.replace(0,np.nan)
+        best_stats = df.style.highlight_max(subset=df.columns[2:],color='green', axis=0).highlight_min(subset=df.columns[2:], axis=0, color='red')
+        st.dataframe(best_stats)
+        st.title(f"{player1} Best and Worst Stats")
+        col1,col2 = st.columns(2)
+        min_and_max = pd.DataFrame({
+            "max": df.max(),
+            "min":df.min()
+        })
+        st.dataframe(min_and_max)
+
+        
 
 
 if page == "Compare Players":
@@ -102,6 +114,12 @@ if page == "Compare Players":
             with col2:
                 st.subheader(f"{player_compare_2} Stats")
                 st.dataframe(stats2,use_container_width=True)
+    st.write("Comparing results")
+    players =[{
+        "Name": "Pro player 1", **stats1},
+        {"Name": "Pro player 2",**stats2}
+    ]
+    
             
 
 if page == "You vs Pro":
@@ -115,8 +133,9 @@ if page == "You vs Pro":
         else:
             df = df.drop(columns=['GS','FGM','FGA','FG3M', 'FG3A', 'FTM', 'FTA','OREB','DREB'])
             subset_cols = df.columns[1:]
-            new_df =df.style.highlight_max(subset=subset_cols, color='green')
-            st.dataframe(new_df)
+            st.session_state.pro_player_data = df[subset_cols]
+            st.session_state.pro_player_style = df.style.highlight_max(subset=subset_cols, color='green')
+            st.dataframe(st.session_state.pro_player_style)
         
     with col2:
         st.subheader("Your stats")
@@ -126,7 +145,20 @@ if page == "You vs Pro":
             st.dataframe(highlighted_df)
         else:
             st.warning("Please fill out your personal stats first")
-            
+    with col1:        
+        st.subheader("Max stats")
+        max_vals_players = st.session_state.pro_player_data.max()
+        st.dataframe(max_vals_players)
+        
+    with col2:
+        if "personal_stats" in st.session_state:
+            st.subheader("Best Personal stats")
+            personal_stats = pd.DataFrame(st.session_state.personal_stats,index=[0])
+            st.dataframe(personal_stats.max())
+  
+    
+
+       
                 
                 
             
