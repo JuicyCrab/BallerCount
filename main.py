@@ -97,9 +97,8 @@ if page == "Compare Players":
     player_compare_2 = st.text_input("Enter another player")
     stats1 = load_data(player_compare_1)
     stats2 = load_data(player_compare_2)
-        
+    col1,col2 = st.columns(2)
     if player_compare_1 and player_compare_2:
-        col1,col2 = st.columns(2)
         if stats1 is None:
             st.error(f"No data for {player_compare_1}")
         
@@ -111,14 +110,27 @@ if page == "Compare Players":
                 st.subheader(f"{player_compare_1} Stats")
                 st.dataframe(stats1, use_container_width=True)
                 
+                
             with col2:
                 st.subheader(f"{player_compare_2} Stats")
                 st.dataframe(stats2,use_container_width=True)
-    st.write("Comparing results")
-    players =[{
-        "Name": "Pro player 1", **stats1},
-        {"Name": "Pro player 2",**stats2}
-    ]
+    with col1:
+        min_max_player1 = pd.DataFrame({
+            "max": stats1.max(),
+            "min" : stats1.min()
+        })
+    
+        st.dataframe(min_max_player1)
+    with col2:
+        min_max_player2 = pd.DataFrame({
+            "max": stats2.max(),
+            "min": stats2.min()
+        })
+        st.dataframe(min_max_player2)
+        
+        
+        
+            
     
             
 
@@ -139,22 +151,28 @@ if page == "You vs Pro":
         
     with col2:
         st.subheader("Your stats")
-        if "personal_stats" in st.session_state:
-            df = pd.DataFrame(st.session_state.personal_stats, index=[0])
+        if "personal_stats_data" in st.session_state:
+            df = pd.DataFrame(st.session_state.personal_stats_data, index=[0])
             highlighted_df = df.style.highlight_max(subset=df.columns[1:],color="yellow")
             st.dataframe(highlighted_df)
         else:
             st.warning("Please fill out your personal stats first")
     with col1:        
-        st.subheader("Max stats")
-        max_vals_players = st.session_state.pro_player_data.max()
-        st.dataframe(max_vals_players)
+        st.write("Best and Worst Player stats")
+        max_min_player = pd.DataFrame({
+            "min": st.session_state.pro_player_data.min(),
+            "max": st.session_state.pro_player_data.max()})
+        
+        st.dataframe(max_min_player)
         
     with col2:
-        if "personal_stats" in st.session_state:
-            st.subheader("Best Personal stats")
-            personal_stats = pd.DataFrame(st.session_state.personal_stats,index=[0])
-            st.dataframe(personal_stats.max())
+        if "personal_stats_data" in st.session_state:
+            st.write("Best and Worst Personal stats")
+            personal_stats = pd.DataFrame({
+                "min": st.session_state.personal_stats_data.min(),
+                "max": st.session_state.personal_stats_data.min()})
+            
+            st.dataframe(personal_stats)
   
     
 
