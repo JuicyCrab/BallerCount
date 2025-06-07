@@ -9,8 +9,29 @@ def load_data(name):
 
 
 
-page = st.sidebar.selectbox("Select a page", ["Personal Stats","Find a player", "Compare Players", "You vs Pro"])
 
+
+page = st.sidebar.selectbox("Select a page", ["Login/Signup","Personal Stats","Find a player", "Compare Players", "You vs Pro"])
+
+if page == "Login/Signup":
+    st.title("Welcome to BallCounter")
+    choice = st.selectbox('Login/SignUp',['Login', 'SignUp'])
+    
+    if choice == 'Login':
+        email = st.text_input("Email")
+        password = st.text_input("Password", type='password')
+        st.button('Login')
+    else:
+        email = st.text_input("Enter an email")
+        password = st.text_input("Create a password",type='password')
+        reenter_password = st.text_input("re-enter the password", type='password')
+        if password is not reenter_password:
+            st.warning("The passwords are different")
+       
+        else: 
+            if st.button("Create my account"):
+                pass 
+        
 
 if page =="Personal Stats":
     st.subheader("Personal Stats")
