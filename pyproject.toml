@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "beautifulsoup4>=4.13.4",
+    "firebase-admin>=6.9.0",
     "matplotlib>=3.10.3",
     "nba-api>=1.9.0",
     "pandas>=2.2.3",

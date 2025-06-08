@@ -14,7 +14,7 @@ def load_data(name):
 page = st.sidebar.selectbox("Select a page", ["Login/Signup","Personal Stats","Find a player", "Compare Players", "You vs Pro"])
 
 if page == "Login/Signup":
-    st.title("Welcome to BallCounter")
+    st.title("Welcome to BallerCount")
     choice = st.selectbox('Login/SignUp',['Login', 'SignUp'])
     
     if choice == 'Login':
