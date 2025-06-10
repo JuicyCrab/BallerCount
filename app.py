@@ -125,7 +125,6 @@ else:
                 "PTS": inputs["points"]
             }
 
-            # Save to DB
             stats_db = Stats()
             stats_db.insert_stats(
                 st.session_state.username,
@@ -148,7 +147,15 @@ else:
 
             st.success("Stats saved")
 
-            st.session_state.personal_stats_data = pd.DataFrame(data,index=[0])
+            new_entry_df = pd.DataFrame(data,index=[0])
+        
+            if 'personal_stats_data' in st.session_state:
+                st.session_state.personal_stats_data = pd.concat(
+                    [st.session_state.personal_stats_data, new_entry_df], ignore_index=True
+                )
+            else:
+                st.session_state.personal_stats_data = new_entry_df
+            
             st.session_state.personal_stats_styler = st.session_state.personal_stats_data.style.highlight_max(axis=0, color='yellow')
             st.dataframe(st.session_state.personal_stats_styler)
 
@@ -222,33 +229,33 @@ else:
     
         with col2:
             st.subheader("Your stats")
-            # Load all personal stats from session or DB as a DataFrame with multiple rows (each with a Date)
-            if "all_personal_stats" in st.session_state:
-                personal_stats_df = st.session_state.all_personal_stats
-                personal_stats_df['Date'] = pd.to_datetime(personal_stats_df['Date'])  # Ensure Date column is datetime
+        
+            if "personal_stats_data" in st.session_state:
+                personal_stats_df = st.session_state.personal_stats_data
+                personal_stats_df['Date'] = pd.to_datetime(personal_stats_df['Date']) 
                 
-                # Date range picker (default range is from earliest to latest date in your data)
+
                 min_date = personal_stats_df['Date'].min().date()
                 max_date = personal_stats_df['Date'].max().date()
                 date_range = st.date_input("Select date range", [min_date, max_date], min_value=min_date, max_value=max_date)
                 
-                # Defensive: ensure date_range is a tuple or list of two dates
+                
                 if len(date_range) == 2:
                     start_date, end_date = date_range
-                    # Filter the DataFrame for dates between start_date and end_date inclusive
+                   
                     filtered_df = personal_stats_df[
-                        (personal_stats_df['Date'] >= pd.Timestamp(start_date)) & 
-                        (personal_stats_df['Date'] <= pd.Timestamp(end_date))
+                        (personal_stats_df['Date'].dt.date >= start_date) & 
+                        (personal_stats_df['Date'].dt.date <= end_date)
                     ]
                     
                     if filtered_df.empty:
                         st.warning("No personal stats in the selected date range.")
                     else:
-                        # Show filtered stats - you can customize here, e.g., mean, min, max
+                      
                         st.write(f"Showing stats from {start_date} to {end_date}:")
                         st.dataframe(filtered_df.style.highlight_max(subset=filtered_df.columns.difference(['Date']), color='yellow'))
                         
-                        # Show summary stats for that range
+                 
                         summary = pd.DataFrame({
                             "min": filtered_df.min(numeric_only=True),
                             "max": filtered_df.max(numeric_only=True),
@@ -261,7 +268,7 @@ else:
             else:
                 st.warning("Please fill out your personal stats first (and ensure multiple entries are saved).")
     
-    # Rest of your You vs Pro code...
+
         with col1:
             st.write("Best and Worst Player stats")
             max_min_player = pd.DataFrame({
@@ -281,5 +288,5 @@ else:
                 st.write("Best and Worst Personal stats")
                 personal_stats = pd.DataFrame({
                     "min": st.session_state.personal_stats_data.min(),
-                    "max": st.session_state.personal_stats_data.min()})
+                    "max": st.session_state.personal_stats_data.max()})
                 st.dataframe(personal_stats)
