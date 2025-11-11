@@ -22,20 +22,23 @@ Prerequisites
 
 Quick start (run locally)
 1. Clone the repo
-   git clone https://github.com/<owner>/BallerCount.git
+   git clone https://github.com/JuicyCrab/BallerCount.git
    cd BallerCount
 
 2. Create and activate a virtual environment (recommended)
    python -m venv .venv
    - macOS / Linux: source .venv/bin/activate
    - Windows (PowerShell): .venv\Scripts\Activate.ps1
+   uv
+   - uv venv or uv init 
+   - uv pip install -r requirements.txt
 
-3. Install dependencies
+4. Install dependencies
    pip install -r requirements.txt
    If you don't have requirements.txt, install the essentials:
    pip install streamlit nba_api pandas
 
-4. Configure (optional)
+5. Configure (optional)
    - By default the project looks for a sqlite database file (e.g. database.db) in the project root.
    - If the app uses environment variables, create a .env file in the project root. Example:
      ```
@@ -45,12 +48,12 @@ Quick start (run locally)
      ```
      (Adjust variable names if your project uses different config keys.)
 
-5. Run the Streamlit app
+6. Run the Streamlit app
    - If the Streamlit entry point is app.py:
      streamlit run app.py
    - Or:
      python -m streamlit run app.py
-   - Then open the URL shown in the terminal (usually http://localhost:8501).
+   - Then open the URL shown in the terminal.
 
 Notes about sqlite
 - The database is a single file (defaults: database.db or db.sqlite). To reset data locally, stop the app and remove the file:
